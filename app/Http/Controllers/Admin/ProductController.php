@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+
+class ProductController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Product::query();
+
+        if ($request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->category && $request->category !== 'Semua') {
+            $query->where('category', $request->category);
+        }
+
+        $products = $query->latest()->paginate(10)->withQueryString();
+
+        return Inertia::render('Admin/Products/Index', [
+            'products' => $products,
+            'filters' => $request->only(['search', 'category'])
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Products/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|in:Pupuk Organik,Probiotik Peternakan',
+            'desc' => 'nullable|string',
+            'price' => 'required|string',
+            'badge' => 'nullable|string|max:50',
+            'badgeTone' => 'nullable|string|max:50',
+            'image' => 'nullable|image|max:2048'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::create($validated);
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
+    }
+
+    public function edit(Product $product)
+    {
+        return Inertia::render('Admin/Products/Edit', [
+            'product' => $product
+        ]);
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|in:Pupuk Organik,Probiotik Peternakan',
+            'desc' => 'nullable|string',
+            'price' => 'required|string',
+            'badge' => 'nullable|string|max:50',
+            'badgeTone' => 'nullable|string|max:50',
+            'image' => 'nullable|image|max:2048'
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+            $validated['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($validated);
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diupdate.');
+    }
+
+    public function destroy(Product $product)
+    {
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+        $product->delete();
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
+    }
+}

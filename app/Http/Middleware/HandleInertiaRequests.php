@@ -37,7 +37,13 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'auth' => [
+                'user' => $request->user(),
+            ],
+            'settings' => \App\Models\Setting::pluck('value', 'key')->toArray(),
+            'flash' => [
+                'success' => fn () => $request->session()->get('success')
+            ],
         ];
     }
 }

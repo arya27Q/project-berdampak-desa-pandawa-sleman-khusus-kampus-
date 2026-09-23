@@ -1,10 +1,10 @@
 <template>
   <Head :title="title ? `${title} | Admin Pandawa` : 'Admin Pandawa Kencana'" />
 
-  <div class="min-h-screen bg-[#f8f9fa] flex text-gray-800 font-sans">
+  <div class="min-h-screen bg-[#f8f9fa] flex text-gray-800 font-sans p-4 lg:p-6 gap-4 lg:gap-6">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-white flex flex-col h-screen sticky top-0 border-r border-gray-100 shrink-0">
+    <aside class="w-64 bg-white flex flex-col h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)] sticky top-4 lg:top-6 rounded-3xl shadow-sm border border-gray-100 shrink-0 hidden md:flex overflow-hidden">
       <!-- Logo -->
       <div class="p-6 flex items-center gap-2">
         <Icon name="leaf" class="w-8 h-8 text-emerald-700" />
@@ -38,10 +38,10 @@
               <Icon name="settings" class="w-5 h-5" />
               Pengaturan Web
             </Link>
-            <a href="#" class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors mr-4 rounded-r-2xl">
+            <Link method="post" href="/admin/logout" as="button" class="w-full text-left flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors mr-4 rounded-r-2xl">
               <Icon name="logout" class="w-5 h-5" />
               Logout
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
@@ -65,42 +65,34 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col h-screen overflow-hidden min-w-0">
+    <div class="flex-1 flex flex-col h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)] overflow-hidden min-w-0 gap-4 lg:gap-6">
       
       <!-- Topbar -->
-      <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
-        <!-- search -->
-        <div class="relative">
-          <Icon name="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-64 md:w-80 text-gray-600 transition-all" />
-          <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-            <kbd class="text-[0.6rem] bg-white border border-gray-200 px-1.5 py-0.5 rounded shadow-sm text-gray-400 font-sans">⌘</kbd>
-            <kbd class="text-[0.6rem] bg-white border border-gray-200 px-1.5 py-0.5 rounded shadow-sm text-gray-400 font-sans">K</kbd>
-          </div>
+      <header class="bg-white/80 backdrop-blur-md rounded-3xl border border-gray-100 shadow-sm px-6 lg:px-8 py-4 flex items-center justify-between shrink-0 z-10">
+        
+        <!-- left side -->
+        <div>
+          <h1 class="text-lg font-bold text-gray-800">{{ title || 'Panel Admin' }}</h1>
+          <p class="text-xs text-gray-500">{{ new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
         </div>
         
         <!-- right side -->
         <div class="flex items-center gap-4">
-          <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"><Icon name="mail" class="w-5 h-5" /></button>
-          <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors relative">
-            <Icon name="bell" class="w-5 h-5" />
-            <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-          </button>
-          
-          <div class="w-px h-8 bg-gray-200 mx-2 hidden md:block"></div>
           
           <div class="flex items-center gap-3 cursor-pointer group">
-            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&auto=format" alt="Avatar" class="w-10 h-10 rounded-full border border-gray-200 object-cover" />
+            <div class="w-10 h-10 rounded-full border border-gray-200 bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
+              {{ $page.props.auth?.user?.name?.charAt(0) || 'A' }}
+            </div>
             <div class="hidden md:block text-sm">
-              <p class="font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">Budi Santoso</p>
-              <p class="text-xs text-gray-500">admin@pandawa.id</p>
+              <p class="font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">{{ $page.props.auth?.user?.name || 'Admin' }}</p>
+              <p class="text-xs text-gray-500">{{ $page.props.auth?.user?.email || 'admin@pandawa.id' }}</p>
             </div>
           </div>
         </div>
       </header>
 
       <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-12 pb-24">
+      <main class="flex-1 overflow-y-auto pb-24 pr-2">
         <slot />
       </main>
       

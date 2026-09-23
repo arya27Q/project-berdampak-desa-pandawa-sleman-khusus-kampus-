@@ -1,9 +1,28 @@
 <script setup>
 import { ref, computed } from 'vue';
 import Icon from '@/Components/Icon.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
-const WHATSAPP_NUMBER = '6281234567890';
+const props = defineProps({
+  products: {
+    type: Array,
+    default: () => []
+  },
+  articles: {
+    type: Array,
+    default: () => []
+  }
+});
+
+import { usePage } from '@inertiajs/vue3';
+const page = usePage();
+const WHATSAPP_NUMBER = computed(() => {
+  let num = page.props.settings?.whatsapp || '0812-3456-7890';
+  // convert 08... to 628... and strip non-digits
+  num = num.replace(/\D/g,'');
+  if (num.startsWith('0')) num = '62' + num.substring(1);
+  return num;
+});
 
 const NAV_LINKS = [
   { label: 'Beranda', href: '#beranda' },
@@ -13,60 +32,17 @@ const NAV_LINKS = [
   { label: 'Kontak', href: '#kontak' },
 ];
 
-const PRODUCTS = [
-  {
-    name: 'Pupuk Kompos Kencana',
-    category: 'Pupuk Organik',
-    desc: 'Kompos matang dari hijauan pilihan, menyuburkan dan memperbaiki struktur tanah.',
-    price: 'Rp 25.000 / karung',
-    badge: 'Best Seller',
-    badgeTone: 'clay',
-    image: 'https://images.unsplash.com/photo-1597868165956-03a6827955b1?w=800&h=600&fit=crop&auto=format',
-  },
-  {
-    name: 'Pupuk Organik Cair (POC)',
-    category: 'Pupuk Organik',
-    desc: 'Nutrisi cair cepat serap untuk semprot daun maupun kocor akar tanaman.',
-    price: 'Rp 30.000 / liter',
-    badge: '100% Organik',
-    badgeTone: 'leaf',
-    image: 'https://images.unsplash.com/photo-1620675506518-3df066bb2b30?w=800&h=600&fit=crop&auto=format',
-  },
-  {
-    name: 'Pupuk Bokashi Padat',
-    category: 'Pupuk Organik',
-    desc: 'Fermentasi bahan organik kaya mikroba untuk lahan sawah dan kebun.',
-    price: 'Rp 22.000 / karung',
-    image: 'https://images.unsplash.com/photo-1719701285590-68cac7ad9a49?w=800&h=600&fit=crop&auto=format',
-  },
-  {
-    name: 'Probiotik Ternak Sehat',
-    category: 'Probiotik Peternakan',
-    desc: 'Suplemen fermentasi pakan, meningkatkan daya cerna dan kesehatan ternak.',
-    price: 'Rp 35.000 / botol',
-    badge: 'Best Seller',
-    badgeTone: 'clay',
-    image: 'https://images.unsplash.com/photo-1557139582-4206cd15c69a?w=800&h=600&fit=crop&auto=format',
-  },
-  {
-    name: 'Probiotik Pengurai Kandang',
-    category: 'Probiotik Peternakan',
-    desc: 'Mengurai kotoran ternak, menekan bau, dan mempercepat pembuatan pupuk.',
-    price: 'Rp 28.000 / botol',
-    image: 'https://images.unsplash.com/photo-1556490496-45afc7b8b8e5?w=800&h=600&fit=crop&auto=format',
-  },
-  {
-    name: 'Probiotik Air Kolam',
-    category: 'Probiotik Peternakan',
-    desc: 'Menjaga kualitas air kolam ikan agar sehat dan produktif secara alami.',
-    price: 'Rp 32.000 / botol',
-    badge: '100% Organik',
-    badgeTone: 'leaf',
-    image: 'https://images.unsplash.com/photo-1558388556-2261d4cc1938?w=800&h=600&fit=crop&auto=format',
-  },
+const DEFAULT_ARTICLE_IMAGES = [
+  'https://images.unsplash.com/photo-1592982537447-6f296d0ba967?w=700&h=480&fit=crop&auto=format',
+  'https://images.unsplash.com/photo-1586771107445-d3af9e173c52?w=700&h=480&fit=crop&auto=format',
+  'https://images.unsplash.com/photo-1530836369250-ef71a3f5e43d?w=700&h=480&fit=crop&auto=format',
+  'https://images.unsplash.com/photo-1585437812513-4338e932b1ba?w=700&h=480&fit=crop&auto=format',
+  'https://images.unsplash.com/photo-1620675506518-3df066bb2b30?w=700&h=480&fit=crop&auto=format'
 ];
 
-const FILTERS = ['Semua', 'Pupuk Organik', 'Probiotik Peternakan'];
+
+
+const FILTERS = ['Semua', 'Pupuk Organik', 'Probiotik Peternakan', 'Terlaris', 'Populer'];
 
 const STATS = [
   { value: '50+', label: 'Mitra Tani' },
@@ -96,40 +72,99 @@ const STEPS = [
   },
 ];
 
-const ARTICLES = [
+
+
+const TESTIMONIALS = [
   {
-    tag: 'Panduan',
-    title: 'Cara Mengaplikasikan Pupuk Organik Cair yang Benar',
-    excerpt: 'Dosis, waktu, dan teknik penyemprotan agar nutrisi terserap maksimal oleh tanaman.',
-    image: 'https://images.unsplash.com/photo-1620675506518-3df066bb2b30?w=700&h=480&fit=crop&auto=format',
+    quote: 'Sejak pakai pupuk organik Pandawa, struktur tanah sawah makin gembur. Hasil panen padi musim ini meningkat drastis dan biaya pupuk kimia jadi jauh lebih hemat.',
+    name: 'Pak Marno',
+    role: 'Ketua Kelompok Tani, Cangkringan',
+    image: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&auto=format'
   },
   {
-    tag: 'Edukasi',
-    title: 'Mengenal Peran Mikroba Probiotik untuk Kesuburan Tanah',
-    excerpt: 'Bagaimana mikroorganisme menghidupkan tanah dan menekan penyakit tanaman secara alami.',
-    image: 'https://images.unsplash.com/photo-1719701285590-68cac7ad9a49?w=700&h=480&fit=crop&auto=format',
+    quote: 'Probiotik ternak dari Pandawa benar-benar ampuh menghilangkan bau kandang kambing. Selain itu, ternak jadi lebih sehat dan makannya lahap banget.',
+    name: 'Budi Santoso',
+    role: 'Peternak Kambing Etawa, Sleman',
+    image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&auto=format'
   },
   {
-    tag: 'Peternakan',
-    title: 'Probiotik untuk Ternak: Manfaat & Cara Pemberian',
-    excerpt: 'Tips memberikan probiotik pada pakan untuk ternak yang lebih sehat dan produktif.',
-    image: 'https://images.unsplash.com/photo-1557139582-4206cd15c69a?w=700&h=480&fit=crop&auto=format',
+    quote: 'Awalnya ragu beralih ke organik, tapi setelah didampingi langsung oleh tim Pandawa, sekarang kebun sayur saya 100% bebas kimia. Panen melimpah.',
+    name: 'Ibu Ningsih',
+    role: 'Petani Sayur, Kaliurang',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&auto=format'
+  }
+];
+
+const FAQS = [
+  {
+    q: 'Apakah melayani pembelian eceran (B2C)?',
+    a: 'Ya, kami melayani pembelian dalam jumlah kecil untuk konsumen umum maupun kebutuhan rumah tangga.'
   },
+  {
+    q: 'Bagaimana cara menjadi agen atau mitra Pandawa?',
+    a: 'Anda dapat menghubungi kami via WhatsApp. Kami memiliki program kemitraan khusus dengan harga grosir untuk kelompok tani dan toko pertanian.'
+  },
+  {
+    q: 'Apakah pupuk organik cair (POC) bisa dicampur pestisida kimia?',
+    a: 'Sebaiknya hindari mencampur POC dengan bahan kimia sintetis agar mikroba baik di dalam pupuk tetap hidup dan bekerja maksimal di tanah.'
+  },
+  {
+    q: 'Apakah ada biaya pengiriman?',
+    a: 'Gratis ongkos kirim untuk wilayah Sleman dengan minimal pembelian tertentu. Untuk luar daerah, ongkir disesuaikan dengan jasa ekspedisi/kargo.'
+  }
 ];
 
 function waLink(productName = '') {
   const text = productName
     ? `Halo Pandawa Kencana Multi Farm, saya ingin memesan *${productName}*.\n\nJumlah: \nAlamat pengiriman: \n\nMohon info ketersediaan dan totalnya. Terima kasih.`
     : 'Halo Pandawa Kencana Multi Farm, saya ingin bertanya tentang produk pupuk organik dan probiotiknya.';
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${WHATSAPP_NUMBER.value}?text=${encodeURIComponent(text)}`;
 }
 
 const menuOpen = ref(false);
 const filter = ref('Semua');
+const activeFaq = ref(null);
+
+const toggleFaq = (idx) => {
+  activeFaq.value = activeFaq.value === idx ? null : idx;
+};
 
 const visibleProducts = computed(() => {
-  return filter.value === 'Semua' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter.value);
+  if (filter.value === 'Semua') return props.products;
+  if (filter.value === 'Terlaris' || filter.value === 'Populer') {
+    return props.products.filter(p => p.badge && p.badge.toLowerCase() === filter.value.toLowerCase());
+  }
+  return props.products.filter(p => p.category === filter.value);
 });
+
+const showLeadModal = ref(false);
+const leadProductName = ref('');
+
+const leadForm = useForm({
+  name: '',
+  phone: '',
+  message: ''
+});
+
+const openModal = (productName = '') => {
+  leadProductName.value = productName;
+  leadForm.message = productName ? `Saya ingin pesan ${productName}` : '';
+  showLeadModal.value = true;
+};
+
+const closeModal = () => {
+  showLeadModal.value = false;
+  leadForm.reset();
+};
+
+const submitLead = () => {
+  leadForm.post('/lead', {
+    onSuccess: () => {
+      window.open(waLink(leadProductName.value), '_blank');
+      closeModal();
+    }
+  });
+};
 </script>
 
 <template>
@@ -149,10 +184,10 @@ const visibleProducts = computed(() => {
             Desa Cangkringan, Sleman
           </span>
         </div>
-        <a :href="waLink()" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 font-medium transition-colors hover:text-sprout">
+        <button @click="openModal()" class="inline-flex items-center gap-1.5 font-medium transition-colors hover:text-sprout">
           <Icon name="chat" class="h-3.5 w-3.5" />
-          Customer Service: +62 812-3456-7890
-        </a>
+          Customer Service: {{ $page.props.settings?.whatsapp || '0812-3456-7890' }}
+        </button>
       </div>
     </div>
 
@@ -176,9 +211,9 @@ const visibleProducts = computed(() => {
         </nav>
 
         <div class="flex items-center gap-3">
-          <a :href="waLink()" target="_blank" rel="noreferrer" class="hidden rounded-full bg-moss px-5 py-2 text-sm font-semibold text-cream transition-colors hover:bg-leaf sm:inline-flex">
+          <button @click="openModal()" class="hidden rounded-full bg-moss px-5 py-2 text-sm font-semibold text-cream transition-colors hover:bg-leaf sm:inline-flex">
             Pesan Sekarang
-          </a>
+          </button>
           <button class="flex h-10 w-10 items-center justify-center rounded-lg border border-leaf/20 text-moss lg:hidden" @click="menuOpen = !menuOpen" aria-label="Buka menu">
             <div class="space-y-1.5">
               <span class="block h-0.5 w-5 bg-current"></span>
@@ -194,9 +229,9 @@ const visibleProducts = computed(() => {
           <a v-for="l in NAV_LINKS" :key="l.href" :href="l.href" @click="menuOpen = false" class="text-sm font-medium text-bark/80">
             {{ l.label }}
           </a>
-          <a :href="waLink()" target="_blank" rel="noreferrer" class="mt-1 rounded-full bg-moss px-5 py-2.5 text-center text-sm font-semibold text-cream">
+          <button @click="openModal()" class="mt-1 rounded-full bg-moss px-5 py-2.5 text-center text-sm font-semibold text-cream">
             Pesan Sekarang
-          </a>
+          </button>
         </div>
       </nav>
     </header>
@@ -215,7 +250,7 @@ const visibleProducts = computed(() => {
             CV Pandawa Kencana Multi Farm · Sleman, Yogyakarta
           </span>
           <h1 class="mt-6 font-display text-4xl font-semibold leading-[1.05] text-cream sm:text-5xl md:text-6xl">
-            Wujudkan Pertanian Berkelanjutan bersama Pandawa Kencana
+            {{ $page.props.settings?.headline || 'Pupuk Organik & Probiotik Berkualitas untuk Panen Melimpah' }}
           </h1>
           <p class="mt-5 max-w-xl text-lg leading-relaxed text-cream/85">
             Produsen pupuk organik dan probiotik terpercaya dari Desa Cangkringan untuk hasil panen optimal dan ramah lingkungan.
@@ -327,7 +362,7 @@ const visibleProducts = computed(() => {
         <div class="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
           <article v-for="p in visibleProducts" :key="p.name" class="group flex flex-col overflow-hidden rounded-2xl border border-leaf/10 bg-cream shadow-sm transition-shadow hover:shadow-lg">
             <div class="relative aspect-4/3 overflow-hidden bg-parchment">
-              <img :src="p.image" :alt="p.name" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img :src="p.image_path ? '/storage/' + p.image_path : 'https://images.unsplash.com/photo-1599839619722-39751411ea63?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'" :alt="p.name" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <span v-if="p.badge" :class="['absolute left-3 top-3 rounded-full px-3 py-1 text-[0.7rem] font-semibold text-cream', p.badgeTone === 'clay' ? 'bg-clay' : 'bg-leaf']">
                 {{ p.badge }}
               </span>
@@ -339,12 +374,40 @@ const visibleProducts = computed(() => {
               <h3 class="font-display text-lg font-semibold text-moss">{{ p.name }}</h3>
               <p class="mt-2 flex-1 text-sm leading-relaxed text-bark/70">{{ p.desc }}</p>
               <p class="mt-4 font-display text-lg font-semibold text-clay">{{ p.price }}</p>
-              <a :href="waLink(p.name)" target="_blank" rel="noreferrer" class="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-moss px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-leaf">
+              <button @click="openModal(p.name)" class="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-moss px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-leaf">
                 <Icon name="whatsapp" class="h-4 w-4" />
                 Pesan via WhatsApp
-              </a>
+              </button>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimoni -->
+    <section class="bg-sand py-20 md:py-28">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="text-center mb-14">
+          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">Kata Mereka</span>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-moss md:text-4xl">
+            Bukti nyata di lahan petani
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div v-for="(t, i) in TESTIMONIALS" :key="i" class="rounded-3xl bg-cream p-8 shadow-sm border border-leaf/10 relative flex flex-col">
+            <Icon name="chat" class="absolute right-8 top-8 h-8 w-8 text-leaf/10" />
+            <div class="mb-6 flex gap-1 text-amber-400">
+              <Icon name="check" class="h-4 w-4" v-for="n in 5" :key="n" />
+            </div>
+            <p class="text-sm leading-relaxed text-bark/80 mb-8 italic">"{{ t.quote }}"</p>
+            <div class="flex items-center gap-4 mt-auto">
+              <img :src="t.image" class="h-12 w-12 rounded-full object-cover border border-leaf/20" />
+              <div>
+                <p class="font-bold text-moss text-sm">{{ t.name }}</p>
+                <p class="text-[0.65rem] text-bark/60 uppercase tracking-widest">{{ t.role }}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -380,6 +443,27 @@ const visibleProducts = computed(() => {
       </div>
     </section>
 
+    <!-- FAQ -->
+    <section class="mx-auto max-w-3xl px-6 py-20 md:py-28">
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-leaf">Tanya Jawab</span>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-moss md:text-4xl">
+          Pertanyaan yang sering diajukan
+        </h2>
+      </div>
+      <div class="space-y-4">
+        <div v-for="(faq, i) in FAQS" :key="i" class="rounded-2xl border border-leaf/15 bg-cream overflow-hidden">
+          <button @click="toggleFaq(i)" class="flex w-full items-center justify-between px-6 py-5 text-left font-semibold text-moss transition-colors hover:bg-leaf/5">
+            <span>{{ faq.q }}</span>
+            <Icon :name="activeFaq === i ? 'check' : 'plus'" class="h-5 w-5 shrink-0 text-leaf transition-transform duration-300" :class="{ 'rotate-180': activeFaq === i }" />
+          </button>
+          <div v-show="activeFaq === i" class="px-6 pb-6 pt-2 text-sm leading-relaxed text-bark/75">
+            {{ faq.a }}
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Artikel / Edukasi Tani -->
     <section id="artikel" class="bg-sand py-20 md:py-28">
       <div class="mx-auto max-w-6xl px-6">
@@ -399,9 +483,9 @@ const visibleProducts = computed(() => {
         </div>
 
         <div class="mt-12 grid grid-cols-1 gap-7 md:grid-cols-3">
-          <article v-for="a in ARTICLES" :key="a.title" class="group flex flex-col overflow-hidden rounded-2xl border border-leaf/10 bg-cream shadow-sm transition-shadow hover:shadow-lg">
+          <article v-for="(a, i) in articles" :key="a.title" class="group flex flex-col overflow-hidden rounded-2xl border border-leaf/10 bg-cream shadow-sm transition-shadow hover:shadow-lg">
             <div class="aspect-16/10 overflow-hidden bg-parchment">
-              <img :src="a.image" :alt="a.title" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img :src="a.image_path ? (a.image_path.startsWith('http') ? a.image_path : '/storage/' + a.image_path) : DEFAULT_ARTICLE_IMAGES[i % DEFAULT_ARTICLE_IMAGES.length]" :alt="a.title" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             </div>
             <div class="flex flex-1 flex-col p-6">
               <span class="w-fit rounded-full bg-sand px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-leaf">
@@ -409,10 +493,7 @@ const visibleProducts = computed(() => {
               </span>
               <h3 class="mt-3 font-display text-lg font-semibold leading-snug text-moss">{{ a.title }}</h3>
               <p class="mt-2 flex-1 text-sm leading-relaxed text-bark/70">{{ a.excerpt }}</p>
-              <a href="#" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-clay transition-colors hover:text-moss">
-                Baca selengkapnya
-                <Icon name="arrow" class="h-4 w-4" />
-              </a>
+
             </div>
           </article>
         </div>
@@ -430,10 +511,10 @@ const visibleProducts = computed(() => {
             Konsultasikan kebutuhan lahan atau ternak Anda bersama tim kami.
           </p>
         </div>
-        <a :href="waLink()" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-sprout px-7 py-3.5 text-sm font-semibold text-bark transition-transform hover:-translate-y-0.5 hover:bg-cream">
+        <button @click="openModal()" class="inline-flex items-center gap-2 rounded-full bg-sprout px-7 py-3.5 text-sm font-semibold text-bark transition-transform hover:-translate-y-0.5 hover:bg-cream">
           <Icon name="whatsapp" class="h-4 w-4" />
           Hubungi via WhatsApp
-        </a>
+        </button>
       </div>
     </section>
 
@@ -466,13 +547,13 @@ const visibleProducts = computed(() => {
           <ul class="mt-4 space-y-3 text-sm text-cream/70">
             <li class="flex gap-2">
               <Icon name="pin" class="mt-0.5 h-4 w-4 shrink-0 text-sprout" />
-              Jl. Cangkringan, Desa Cangkringan, Kec. Cangkringan, Sleman, D.I. Yogyakarta 55583
+              {{ $page.props.settings?.address || 'Jl. Kaliurang KM 20, Desa Cangkringan, Sleman, Yogyakarta' }}
             </li>
             <li>
-              <a :href="waLink()" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 transition-colors hover:text-sprout">
+              <button @click="openModal()" class="inline-flex items-center gap-2 transition-colors hover:text-sprout">
                 <Icon name="whatsapp" class="h-4 w-4 text-sprout" />
-                +62 812-3456-7890
-              </a>
+                {{ $page.props.settings?.whatsapp || '0812-3456-7890' }}
+              </button>
             </li>
             <li>
               <a href="mailto:halo@pandawakencana.id" class="inline-flex items-center gap-2 transition-colors hover:text-sprout">
@@ -496,11 +577,40 @@ const visibleProducts = computed(() => {
       </div>
 
       <div class="border-t border-cream/10">
-        <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-5 text-center text-xs text-cream/50 sm:flex-row">
+        <div class="mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-6 py-5 text-center text-xs text-cream/50">
           <span>© 2026 CV Pandawa Kencana Multi Farm. Seluruh hak cipta dilindungi.</span>
-          <Link href="/admin/dashboard" class="transition-colors hover:text-sprout">Login Admin</Link>
         </div>
       </div>
     </footer>
+
+    <!-- Modal Form Pemesanan -->
+    <div v-if="showLeadModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bark/60 backdrop-blur-sm">
+      <div class="bg-cream w-full max-w-md rounded-3xl p-8 shadow-xl relative animate-in fade-in zoom-in duration-200">
+        <button @click="closeModal()" class="absolute right-6 top-6 text-bark/50 hover:text-moss transition-colors">
+          <Icon name="plus" class="w-6 h-6 rotate-45" />
+        </button>
+        <div class="mb-6">
+          <h3 class="font-display text-2xl font-semibold text-moss">Informasi Pemesanan</h3>
+          <p class="text-sm text-bark/70 mt-1">Silakan lengkapi form berikut sebelum kami arahkan ke WhatsApp.</p>
+        </div>
+        <form @submit.prevent="submitLead" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-bark/80 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+            <input v-model="leadForm.name" type="text" required class="w-full rounded-xl border border-leaf/20 bg-white px-4 py-3 text-sm focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss" placeholder="Masukkan nama Anda" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-bark/80 mb-1">Nomor WhatsApp <span class="text-red-500">*</span></label>
+            <input v-model="leadForm.phone" type="tel" required class="w-full rounded-xl border border-leaf/20 bg-white px-4 py-3 text-sm focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss" placeholder="081234567890" />
+          </div>
+          <div v-if="leadProductName" class="hidden">
+            <input type="hidden" v-model="leadForm.message" />
+          </div>
+          <button type="submit" :disabled="leadForm.processing" class="w-full mt-4 flex items-center justify-center gap-2 rounded-full bg-moss px-5 py-3.5 font-semibold text-cream transition-colors hover:bg-leaf disabled:opacity-70 disabled:cursor-not-allowed">
+            <span v-if="leadForm.processing">Sedang memproses...</span>
+            <span v-else class="flex items-center gap-2"><Icon name="whatsapp" class="w-5 h-5" /> Lanjutkan ke WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>

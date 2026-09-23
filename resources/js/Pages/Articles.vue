@@ -2,43 +2,12 @@
 import { Head, Link } from '@inertiajs/vue3';
 import Icon from '@/Components/Icon.vue';
 
-const ARTICLES = [
-  {
-    tag: 'Panduan',
-    title: 'Cara Mengaplikasikan Pupuk Organik Cair yang Benar',
-    excerpt: 'Dosis, waktu, dan teknik penyemprotan agar nutrisi terserap maksimal oleh tanaman.',
-    image: 'https://images.unsplash.com/photo-1620675506518-3df066bb2b30?w=700&h=480&fit=crop&auto=format',
-    date: '12 Sep 2026'
-  },
-  {
-    tag: 'Edukasi',
-    title: 'Mengenal Peran Mikroba Probiotik untuk Kesuburan Tanah',
-    excerpt: 'Bagaimana mikroorganisme menghidupkan tanah dan menekan penyakit tanaman secara alami.',
-    image: 'https://images.unsplash.com/photo-1719701285590-68cac7ad9a49?w=700&h=480&fit=crop&auto=format',
-    date: '5 Sep 2026'
-  },
-  {
-    tag: 'Peternakan',
-    title: 'Probiotik untuk Ternak: Manfaat & Cara Pemberian',
-    excerpt: 'Tips memberikan probiotik pada pakan untuk ternak yang lebih sehat dan produktif.',
-    image: 'https://images.unsplash.com/photo-1557139582-4206cd15c69a?w=700&h=480&fit=crop&auto=format',
-    date: '28 Agu 2026'
-  },
-  {
-    tag: 'Panduan',
-    title: 'Panduan Membuat Kompos Sendiri di Rumah',
-    excerpt: 'Memanfaatkan sisa bahan organik rumah tangga menjadi pupuk berkualitas.',
-    image: 'https://images.unsplash.com/photo-1597868165956-03a6827955b1?w=700&h=480&fit=crop&auto=format',
-    date: '15 Agu 2026'
-  },
-  {
-    tag: 'Edukasi',
-    title: 'Keuntungan Beralih ke Pertanian Organik',
-    excerpt: 'Dampak positif pada lingkungan, hasil panen, dan kesehatan.',
-    image: 'https://images.unsplash.com/photo-1558388556-2261d4cc1938?w=700&h=480&fit=crop&auto=format',
-    date: '1 Agu 2026'
+const props = defineProps({
+  articles: {
+    type: Object,
+    default: () => ({ data: [] })
   }
-];
+});
 </script>
 
 <template>
@@ -77,9 +46,9 @@ const ARTICLES = [
     <!-- Articles Grid -->
     <section class="py-20 px-6">
       <div class="mx-auto max-w-6xl grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <article v-for="a in ARTICLES" :key="a.title" class="group flex flex-col overflow-hidden rounded-2xl border border-leaf/10 bg-cream shadow-sm transition-shadow hover:shadow-lg">
+        <article v-for="a in articles.data" :key="a.title" class="group flex flex-col overflow-hidden rounded-2xl border border-leaf/10 bg-cream shadow-sm transition-shadow hover:shadow-lg">
           <div class="aspect-16/10 overflow-hidden bg-parchment relative">
-            <img :src="a.image" :alt="a.title" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <img :src="a.image_path ? '/storage/' + a.image_path : 'https://images.unsplash.com/photo-1620675506518-3df066bb2b30?w=700&h=480&fit=crop&auto=format'" :alt="a.title" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
           </div>
           <div class="flex flex-1 flex-col p-6">
@@ -91,10 +60,7 @@ const ARTICLES = [
             </div>
             <h3 class="font-display text-xl font-semibold leading-snug text-moss">{{ a.title }}</h3>
             <p class="mt-3 flex-1 text-sm leading-relaxed text-bark/70">{{ a.excerpt }}</p>
-            <a href="#" class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-clay transition-colors hover:text-moss">
-              Baca selengkapnya
-              <Icon name="arrow" class="h-4 w-4" />
-            </a>
+
           </div>
         </article>
       </div>
@@ -116,7 +82,7 @@ const ARTICLES = [
     <footer class="bg-bark text-cream/80 border-t border-cream/10">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-center text-sm sm:flex-row">
         <span>© 2026 CV Pandawa Kencana Multi Farm.</span>
-        <Link href="/admin/dashboard" class="transition-colors hover:text-sprout">Login Admin</Link>
+
       </div>
     </footer>
   </div>
