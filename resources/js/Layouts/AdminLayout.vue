@@ -16,15 +16,15 @@
         <div>
           <div class="px-6 mb-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Menu</div>
           <nav class="space-y-1">
-            <Link href="/admin/dashboard" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url === '/admin/dashboard' ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
+            <Link href="/admin-pandawa/dashboard" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url === '/admin-pandawa/dashboard' ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
               <Icon name="grid" class="w-5 h-5" />
               Dashboard
             </Link>
-            <Link href="/admin/products" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin/products') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
+            <Link href="/admin-pandawa/products" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin-pandawa/products') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
               <Icon name="box" class="w-5 h-5" />
               Kelola Produk
             </Link>
-            <Link href="/admin/articles" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin/articles') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
+            <Link href="/admin-pandawa/articles" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin-pandawa/articles') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
               <Icon name="file" class="w-5 h-5" />
               Artikel Edukasi
             </Link>
@@ -34,11 +34,11 @@
         <div>
           <div class="px-6 mb-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">General</div>
           <nav class="space-y-1">
-            <Link href="/admin/settings" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin/settings') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
+            <Link href="/admin-pandawa/settings" :class="['flex items-center gap-3 px-6 py-3 border-l-4 transition-colors mr-4 rounded-r-2xl', $page.url.startsWith('/admin-pandawa/settings') ? 'border-emerald-700 text-emerald-800 bg-emerald-50/50 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50']">
               <Icon name="settings" class="w-5 h-5" />
               Pengaturan Web
             </Link>
-            <Link method="post" href="/admin/logout" as="button" class="w-full text-left flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors mr-4 rounded-r-2xl">
+            <Link method="post" href="/admin-pandawa/logout" as="button" class="w-full text-left flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors mr-4 rounded-r-2xl">
               <Icon name="logout" class="w-5 h-5" />
               Logout
             </Link>

@@ -39,6 +39,12 @@ class PageController extends Controller
 
     public function submitLead(Request $request)
     {
+        // Honeypot check: If the hidden field is filled, it's a bot.
+        if ($request->filled('company_website')) {
+            // Silently pretend it was successful so the bot doesn't know
+            return redirect()->back()->with('success', 'Pesanan Anda telah diterima.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',

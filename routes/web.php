@@ -11,7 +11,7 @@ Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/articles', [PageController::class, 'articles'])->name('articles.index');
 Route::post('/lead', [PageController::class, 'submitLead'])->name('lead.submit')->middleware('throttle:10,1');
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin-pandawa')->group(function () {
     Route::middleware('guest')->controller(AuthController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('login');
         Route::post('/login', 'login')->middleware('throttle:5,1');

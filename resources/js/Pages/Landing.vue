@@ -143,7 +143,8 @@ const leadProductName = ref('');
 const leadForm = useForm({
   name: '',
   phone: '',
-  message: ''
+  message: '',
+  company_website: ''
 });
 
 const openModal = (productName = '') => {
@@ -604,6 +605,10 @@ const submitLead = () => {
           </div>
           <div v-if="leadProductName" class="hidden">
             <input type="hidden" v-model="leadForm.message" />
+          </div>
+          <!-- Honeypot -->
+          <div class="hidden" aria-hidden="true">
+            <input v-model="leadForm.company_website" type="text" tabindex="-1" autocomplete="off" />
           </div>
           <button type="submit" :disabled="leadForm.processing" class="w-full mt-4 flex items-center justify-center gap-2 rounded-full bg-moss px-5 py-3.5 font-semibold text-cream transition-colors hover:bg-leaf disabled:opacity-70 disabled:cursor-not-allowed">
             <span v-if="leadForm.processing">Sedang memproses...</span>
