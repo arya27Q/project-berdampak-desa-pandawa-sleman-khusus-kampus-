@@ -33,7 +33,7 @@ const handleImageUpload = (e) => {
 };
 
 const submit = () => {
-    form.post(`/admin/articles/${props.article.id}`, {
+    form.post(`/admin-pandawa/articles/${props.article.id}`, {
         preserveScroll: true,
     });
 };
@@ -42,14 +42,14 @@ const submit = () => {
 <template>
   <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-      <Link href="/admin/articles" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
+      <Link href="/admin-pandawa/articles" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         Kembali ke Kelola Artikel
       </Link>
       <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Edit Artikel</h2>
       <p class="text-gray-500 mt-2">Ubah informasi untuk artikel edukasi.</p>
     </div>
-    <button @click="router.delete(`/admin/articles/${article.id}`)" class="inline-flex items-center justify-center px-6 py-3 border border-red-100 text-sm font-medium rounded-xl text-red-600 bg-red-50 hover:bg-red-100 shadow-sm transition-all gap-2">
+    <button @click="router.delete(`/admin-pandawa/articles/${article.id}`)" class="inline-flex items-center justify-center px-6 py-3 border border-red-100 text-sm font-medium rounded-xl text-red-600 bg-red-50 hover:bg-red-100 shadow-sm transition-all gap-2">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
       Hapus Artikel
     </button>
@@ -119,7 +119,7 @@ const submit = () => {
 
       <!-- Submit Button -->
       <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
-        <Link href="/admin/articles" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
+        <Link href="/admin-pandawa/articles" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
         <button type="submit" :disabled="form.processing" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all disabled:opacity-50">
           Simpan Perubahan
         </button>

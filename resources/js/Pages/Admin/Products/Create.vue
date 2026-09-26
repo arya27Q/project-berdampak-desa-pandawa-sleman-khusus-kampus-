@@ -2,6 +2,8 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import TextInput from '@/Components/TextInput.vue';
+import TextAreaInput from '@/Components/TextAreaInput.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -30,7 +32,7 @@ const handleImageUpload = (e) => {
 };
 
 const submit = () => {
-    form.post('/admin/products', {
+    form.post('/admin-pandawa/products', {
         preserveScroll: true,
     });
 };
@@ -38,7 +40,7 @@ const submit = () => {
 
 <template>
   <div class="mb-8">
-    <Link href="/admin/products" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
+    <Link href="/admin-pandawa/products" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
       Kembali ke Kelola Produk
     </Link>
@@ -51,18 +53,22 @@ const submit = () => {
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Nama Produk -->
-        <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-700">Nama Produk</label>
-          <input v-model="form.name" type="text" placeholder="Masukkan nama produk..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-gray-700 transition-all" required />
-          <p v-if="form.errors.name" class="text-red-500 text-xs">{{ form.errors.name }}</p>
-        </div>
+        <TextInput 
+          v-model="form.name" 
+          label="Nama Produk" 
+          placeholder="Masukkan nama produk..." 
+          :error="form.errors.name" 
+          required 
+        />
 
         <!-- Harga -->
-        <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-700">Harga (Teks/Format Bebas)</label>
-          <input v-model="form.price" type="text" placeholder="Misal: Rp 45.000" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-gray-700 transition-all" required />
-          <p v-if="form.errors.price" class="text-red-500 text-xs">{{ form.errors.price }}</p>
-        </div>
+        <TextInput 
+          v-model="form.price" 
+          label="Harga (Teks/Format Bebas)" 
+          placeholder="Misal: Rp 45.000" 
+          :error="form.errors.price" 
+          required 
+        />
 
         <!-- Kategori -->
         <div class="space-y-2">
@@ -89,11 +95,13 @@ const submit = () => {
       </div>
 
       <!-- Deskripsi -->
-      <div class="space-y-2">
-        <label class="block text-sm font-bold text-gray-700">Deskripsi Singkat</label>
-        <textarea v-model="form.desc" rows="3" placeholder="Tuliskan deskripsi singkat atau manfaat produk..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-gray-700 transition-all"></textarea>
-        <p v-if="form.errors.desc" class="text-red-500 text-xs">{{ form.errors.desc }}</p>
-      </div>
+      <TextAreaInput 
+        v-model="form.desc" 
+        label="Deskripsi Singkat" 
+        placeholder="Tuliskan deskripsi singkat atau manfaat produk..." 
+        :error="form.errors.desc" 
+        rows="3" 
+      />
 
       <!-- Foto -->
       <div class="space-y-2">
@@ -124,7 +132,7 @@ const submit = () => {
 
       <!-- Submit Button -->
       <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
-        <Link href="/admin/products" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
+        <Link href="/admin-pandawa/products" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
         <button type="submit" :disabled="form.processing" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all disabled:opacity-50">
           Simpan Produk
         </button>

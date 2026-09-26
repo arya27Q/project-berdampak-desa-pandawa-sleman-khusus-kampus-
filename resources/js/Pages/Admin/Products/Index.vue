@@ -16,7 +16,7 @@ const search = ref(props.filters.search || '');
 const category = ref(props.filters.category || 'Semua');
 
 watch([search, category], debounce(([newSearch, newCategory]) => {
-    router.get('/admin/products', { search: newSearch, category: newCategory }, {
+    router.get('/admin-pandawa/products', { search: newSearch, category: newCategory }, {
         preserveState: true,
         replace: true
     });
@@ -33,7 +33,7 @@ const setCategory = (c) => {
       <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Kelola Produk</h2>
       <p class="text-gray-500 mt-2">Pupuk organik & probiotik unggulan Pandawa Kencana.</p>
     </div>
-    <Link href="/admin/products/create" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 shadow-md hover:shadow-lg transition-all gap-2">
+    <Link href="/admin-pandawa/products/create" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 shadow-md hover:shadow-lg transition-all gap-2">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
       Tambah Produk Baru
     </Link>
@@ -97,10 +97,10 @@ const setCategory = (c) => {
           </td>
           <td class="px-8 py-5 whitespace-nowrap text-right text-sm font-medium">
             <div class="flex justify-end gap-2">
-              <Link :href="`/admin/products/${product.id}/edit`" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-emerald-600 hover:border-emerald-200 flex items-center justify-center transition-colors shadow-sm">
+              <Link :href="`/admin-pandawa/products/${product.id}/edit`" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-emerald-600 hover:border-emerald-200 flex items-center justify-center transition-colors shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
               </Link>
-              <button @click="router.delete(`/admin/products/${product.id}`)" class="w-10 h-10 rounded-full bg-red-50 border border-red-100 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors shadow-sm">
+              <button @click="router.delete(`/admin-pandawa/products/${product.id}`)" class="w-10 h-10 rounded-full bg-red-50 border border-red-100 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
               </button>
             </div>

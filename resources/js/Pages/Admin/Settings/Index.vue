@@ -15,7 +15,7 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post('/admin/settings');
+  form.post('/admin-pandawa/settings');
 };
 </script>
 

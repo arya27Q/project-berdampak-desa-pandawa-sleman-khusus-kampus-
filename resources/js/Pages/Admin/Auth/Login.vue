@@ -7,7 +7,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/admin/login', {
+    form.post('/admin-pandawa/login', {
         onFinish: () => form.reset('password'),
     });
 };
@@ -63,15 +63,6 @@ const submit = () => {
                     <span v-else>Sign In</span>
                 </button>
             </form>
-
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-400">
-                    Don't have an account? 
-                    <Link href="/admin/register" class="font-medium text-emerald-500 hover:text-emerald-400 transition-colors">
-                        Register here
-                    </Link>
-                </p>
-            </div>
         </div>
     </div>
 </template>

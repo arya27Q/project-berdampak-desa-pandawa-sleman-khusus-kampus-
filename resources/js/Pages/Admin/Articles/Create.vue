@@ -28,7 +28,7 @@ const handleImageUpload = (e) => {
 };
 
 const submit = () => {
-    form.post('/admin/articles', {
+    form.post('/admin-pandawa/articles', {
         preserveScroll: true,
     });
 };
@@ -36,7 +36,7 @@ const submit = () => {
 
 <template>
   <div class="mb-8">
-    <Link href="/admin/articles" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
+    <Link href="/admin-pandawa/articles" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-2 mb-4">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
       Kembali ke Kelola Artikel
     </Link>
@@ -108,7 +108,7 @@ const submit = () => {
 
       <!-- Submit Button -->
       <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
-        <Link href="/admin/articles" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
+        <Link href="/admin-pandawa/articles" class="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors">Batal</Link>
         <button type="submit" :disabled="form.processing" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all disabled:opacity-50">
           Simpan Artikel
         </button>
